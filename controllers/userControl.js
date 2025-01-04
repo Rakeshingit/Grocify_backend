@@ -1,11 +1,13 @@
+require('dotenv').config();
+const secretKey = process.env.SECRET_KEY;
+const saltRounds = process.env.SALT_ROUNDS;
+
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const {hash} = require("bcrypt");
 
-const saltRounds = 13;
-const SECRATE_KEY = "ANuclearBombInTheToiletOfACrazyRabbitAt998thFloor";
 
 async function handleUserRegistration(req, res){
     const {firstName, lastName, email, phoneNumber, password} = req.body;
@@ -27,7 +29,6 @@ async function handleUserRegistration(req, res){
         userPassword: hashed,
     });
 
-
     try{
         const isSaved = await insertUser.save();
         if(isSaved){
@@ -44,24 +45,20 @@ async function handleUserRegistration(req, res){
         })
         console.error(e);
     }
-
 }
 
 async function handleUserLogIn(req, res){{
     const {email, password} = req.body;
-    console.log(email, password);
+    //console.log(email, password);
 
     try{
         const user = await userModel.findOne({userEmail:email});
-        // console.log("Hi  "+user.userFirstName);
         if(!user) {
             return res.status(400).json({
                 message: "Invalid email or password"
             })
         }
-
         const isMatch = await bcrypt.compare(password, user.userPassword);
-        console.log(isMatch)
         if(!isMatch){
             return res.status(400).json({
                 message: "Invalid email or password"
@@ -69,12 +66,12 @@ async function handleUserLogIn(req, res){{
         }
 
         //Create a jwt token
-        const token = jwt.sign({email:user.userEmail}, SECRATE_KEY, {expiresIn: "1h"});
-        console.log(token);
+        const token = jwt.sign({email:user.userEmail},secretKey);
 
         //Set jwt in cookie
-        res.cookie("token", token, {httpOnly:true, secure:false, sameSite:"lax"});
-        res.status(200).json({message: "User logged in successfully"});
+        res.cookie("token", token, {httpOnly:true,secure:true, domain:"localhost",path:"/", sameSite:"none"});
+        res.status(200).json({message: "User logged in successfully", ok:true, isAuthenticated: true, userName:user.userFirstName});
+        console.log(`${user.userFirstName} is logged in`);
     }catch(e){
         res.status(400).json({message: e.message,})
     }

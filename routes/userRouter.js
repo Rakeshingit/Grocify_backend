@@ -4,6 +4,6 @@ const { handleUserRegistration , handleUserLogIn} = require('../controllers/user
 const router = express.Router();
 
 router.post("/user-registration", handleUserRegistration);
-router.post("/user-login", handleUserLogIn);
+router.post("/login", handleUserLogIn);
 
 module.exports = router;
