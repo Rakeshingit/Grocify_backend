@@ -1,11 +1,11 @@
-const express = require('express');
-const {createCategory, handleGetCategories } = require('../controllers/createCategoryControl');
-const {handleCreateSubcategories} = require('../controllers/createSubcategoryControl');
+import express from "express";
+import {createCategory, handleGetCategories } from '../controllers/createCategoryControl.js';
+import {handleCreateSubcategories} from '../controllers/createSubcategoryControl.js';
 
-const router = express.Router();
+const createCategoryRouter = express.Router();
 
-router.post('/admin/create-category', createCategory);
-router.post('/admin/create-subcategory', handleCreateSubcategories);
-router.get("/get-subcategories", handleGetCategories);
+createCategoryRouter.post('/admin/create-category', createCategory);
+createCategoryRouter.post('/admin/create-subcategory', handleCreateSubcategories);
+createCategoryRouter.get("/get-subcategories", handleGetCategories);
 
-module.exports = router;
+export default createCategoryRouter;

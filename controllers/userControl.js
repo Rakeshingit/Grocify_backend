@@ -1,12 +1,10 @@
-require('dotenv').config();
 const secretKey = process.env.SECRET_KEY;
 const saltRounds = process.env.SALT_ROUNDS;
 
-const userModel = require("../models/userModel");
-const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const {hash} = require("bcrypt");
+import userModel from "../models/userModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import {hash} from "bcrypt";
 
 
 async function handleUserRegistration(req, res){
@@ -19,7 +17,8 @@ async function handleUserRegistration(req, res){
         })
     }
 
-    const hashed = await bcrypt.hash(password, saltRounds)
+    const hashed = await bcrypt.hash(password, saltRounds);
+
 
     const insertUser = new userModel({
         userFirstName: firstName,
@@ -77,7 +76,7 @@ async function handleUserLogIn(req, res){{
     }
 }}
 
-module.exports = {
+export {
     handleUserRegistration,
     handleUserLogIn
 }

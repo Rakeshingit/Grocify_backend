@@ -1,5 +1,5 @@
-const categoryModel = require("../models/categoriesModel");
-const subcategoryModel = require("../models/subcategoriesModel");
+import categoryModel from "../models/categoriesModel.js";
+import subcategoryModel from "../models/subcategoriesModel.js";
 
 
 
@@ -42,4 +42,4 @@ async function handleGetCategories(req, res) {
     }
 }
 
-module.exports = {createCategory, handleGetCategories}
+export {createCategory, handleGetCategories}

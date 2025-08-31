@@ -1,5 +1,5 @@
-const productModel = require("../models/productModel");
-const subcategoriesModel = require("../models/subcategoriesModel");
+import productModel from "../models/productModel.js";
+import subcategoriesModel from "../models/subcategoriesModel.js";
 
 const handleCreateProduct = async (req, res) => {
     if(!req.files){
@@ -33,4 +33,4 @@ const handleGetProducts = async (req, res) => {
     return res.status(200).json(allProducts);
 }
 
-module.exports = {handleCreateProduct, handleGetProducts};
+export { handleCreateProduct, handleGetProducts };

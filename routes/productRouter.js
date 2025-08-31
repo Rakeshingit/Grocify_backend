@@ -1,11 +1,11 @@
-const express = require('express');
-const { handleCreateProduct, handleGetProducts} = require('../controllers/handleCreateProduct');
+import express from "express";
+import { handleCreateProduct, handleGetProducts } from '../controllers/handleCreateProduct.js';
 
 
-const router = express.Router();
+const productRouter = express.Router();
 
-router.post('/admin/create-product', handleCreateProduct);
-router.put('/admin/update-product/:id', handleCreateProduct);
-router.get('/get-products', handleGetProducts);
+productRouter.post('/admin/create-product', handleCreateProduct);
+productRouter.put('/admin/update-product/:id', handleCreateProduct);
+productRouter.get('/get-products', handleGetProducts);
 
-module.exports = router;
+export default productRouter;

@@ -1,5 +1,5 @@
-const express = require('express');
-const {handleGetCart, handleAddItems, handleDeleteCart} = require("../controllers/cartControl");
+import express from "express";
+import {handleGetCart, handleAddItems, handleDeleteCart} from "../controllers/cartControl.js";
 
 
 const router = express.Router();
@@ -10,4 +10,4 @@ router.post('/carts', handleAddItems);
 
 router.delete("/delete-cart-item/:id", handleDeleteCart)
 
-module.exports = router;
+export default router;

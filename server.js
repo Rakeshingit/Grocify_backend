@@ -1,42 +1,36 @@
-const express = require("express");
-const fs = require("fs");
-const https = require("https");
-const authenticateUser = require("./middlewares/auth");
-const path = require("path");
-const uploader = require("./middlewares/imageUploader");
-const productRouter = require("./routes/productRouter");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const body_Parser = require("body-parser");
-const cookie_parser = require("cookie-parser")
-const cartRouter = require("./routes/cartRouter");
-const userRouter = require("./routes/userRouter");
-const adminRouter = require("./routes/adminRouter");
-const createCategoryRouter = require("./routes/createCategoryRouter");
+import dotenv from 'dotenv';
+dotenv.config();
 
-// Database
-const uri = "mongodb://127.0.0.1:27017/Grocify-DB";
-
-mongoose
-  .connect(uri)
-  .then(() => console.log("Connected to Database"))
-  .catch((error) => console.error("Couldn't connect to the Database", error));
+import fs from "fs";
+import https from "https";
+// import authenticateUser from "./middlewares/auth";
+import uploader from "./middlewares/imageUploader.js";
+import productRouter from "./routes/productRouter.js";
 
 
-const app = express();
+// import cartRouter from "./routes/cartRouter.js";
+import userRouter from "./routes/userRouter.js";
+import adminRouter from "./routes/adminRouter.js";
+import createCategoryRouter from "./routes/createCategoryRouter.js";
+import connectDB from "./db/index.js";
+import {app} from "./app.js"
+import authenticateUser from "./middlewares/auth.js";
+import cartRouter from "./routes/cartRouter.js";
 
 const key = fs.readFileSync('C:\\Users\\rakes\\localhost-key.pem', 'utf8');
 const cert = fs.readFileSync('C:\\Users\\rakes\\localhost.pem', 'utf8');
 const credentials = {key: key, cert: cert};
 
 let httpsServer = https.createServer(credentials, app);
+connectDB()
+    .then(() => {
+      httpsServer.listen(process.env.PORT, () => {
+        console.log(`Server started at port ${process.env.PORT}`);
+      })
+    })
 
-app.use(body_Parser.json({limit: '10mb'}));// Parse JSON bodies
-app.use(body_Parser.urlencoded({ extended: true, limit: '10mb' }));
-// app.use('/uploads', express.static('uploads'));
-app.use(cookie_parser());
-app.use(express.static(__dirname));
-// app.use(express.static(path.join(__dirname, "views")));
+
+
 app.get("/", (req, res) => {
   res.json({ message: "HI from backend" }).status(200);
 });
@@ -49,11 +43,10 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 
-//CORS Configuration
-app.use(cors({
-  origin: 'https://localhost:3000', // Frontend URL
-  credentials: true, // Allow credentials (cookies) to be sent
-}));
+
+app.get("/", (req, res) => {
+    res.json({"message": "Hello from backend"})
+})
 
 //Routes
 app.get("/carts", cartRouter);
@@ -61,7 +54,7 @@ app.post("/carts", cartRouter);
 app.delete("/delete-cart-item/:id", cartRouter);
 app.post("/user-registration", userRouter);
 
-//log in routes
+//Log in routes
 app.post("/login", userRouter);
 app.post("/admin/login", adminRouter);
 
@@ -78,8 +71,8 @@ app.get("/get-products", productRouter);
 app.get("/admin/get-users", authenticateUser, adminRouter);
 app.post("/admin/logout",authenticateUser, adminRouter);
 
-const PORT = process.env.PORT;
+// const PORT = process.env.PORT;
 
-httpsServer.listen(PORT, () => {
-  console.log(`Server is up at port ${PORT}`);
-});
+// httpsServer.listen(PORT, () => {
+//   console.log(`Server is up at port ${PORT}`);
+// });

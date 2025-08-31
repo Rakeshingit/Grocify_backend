@@ -1,6 +1,6 @@
 // imports
-const itemModel = require("../models/cartModel") ;
-const {error} = require("console");
+import itemModel from "../models/cartModel.js";
+// import {error} from "console";
 
 async function handleGetCart(req, res) {
     const fromdb = await itemModel.find({})
@@ -25,7 +25,7 @@ async function handleDeleteCart(req, res) {
             res.status(404).json({ message: "Document not found" });
         }
     } catch (err) {
-        console.error("The error is: " + error);
+        console.error("The error is: " + err);
         res.status(500).json({ message: "internal server error" });
     }
 }
@@ -54,7 +54,7 @@ async function serverSide_itemCheck(stored_item, received_item) {
     }
 }
 
-module.exports = {
+export {
     handleGetCart,
     handleAddItems,
     handleDeleteCart

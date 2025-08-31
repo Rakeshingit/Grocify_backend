@@ -1,10 +1,10 @@
-require('dotenv').config();
+// require('dotenv').config();
 const secretKey = process.env.SECRET_KEY;
 
 // const mongoose = require("mongoose");
-const userModel = require("../models/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import userModel from "../models/userModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 async function handleAdminLogin(req, res) {
     const {userName, password} = req.body;
@@ -55,7 +55,7 @@ async function handleAdminGetUsers(req, res){
     }
 }
 
-module.exports = {
+export {
     handleAdminLogin,
     handleAdminGetUsers,
     handleAdminLogout

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const subcategoriesSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -8,4 +8,4 @@ const subcategoriesSchema = new mongoose.Schema({
 
 const subcategoriesModel = mongoose.model('subcategoriesModel', subcategoriesSchema);
 
-module.exports = subcategoriesModel;
+export default subcategoriesModel;
