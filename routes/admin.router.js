@@ -1,5 +1,5 @@
 import express from "express";
-import {handleAdminLogin, handleAdminGetUsers, handleAdminLogout} from '../controllers/adminControl.js';
+import {handleAdminLogin, handleAdminGetUsers, handleAdminLogout} from '../controllers/admin.controller.js';
 // const handleAdminGetUsers = require('../controllers/adminControl');
 
 const adminRouter = express.Router();

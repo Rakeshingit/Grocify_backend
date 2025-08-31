@@ -1,5 +1,5 @@
 // imports
-import itemModel from "../models/cartModel.js";
+import itemModel from "../models/cart.model.js";
 // import {error} from "console";
 
 async function handleGetCart(req, res) {

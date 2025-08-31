@@ -3,19 +3,18 @@ dotenv.config();
 
 import fs from "fs";
 import https from "https";
-// import authenticateUser from "./middlewares/auth";
-import uploader from "./middlewares/imageUploader.js";
-import productRouter from "./routes/productRouter.js";
+import uploader from "./middlewares/imageUploader.middleware.js";
+import productRouter from "./routes/product.router.js";
 
 
-// import cartRouter from "./routes/cartRouter.js";
-import userRouter from "./routes/userRouter.js";
-import adminRouter from "./routes/adminRouter.js";
-import createCategoryRouter from "./routes/createCategoryRouter.js";
+// import cartRouter from "./routes/cart.router.js";
+import userRouter from "./routes/user.router.js";
+import adminRouter from "./routes/admin.router.js";
+import categoryRouter from "./routes/category.router.js";
 import connectDB from "./db/index.js";
 import {app} from "./app.js"
-import authenticateUser from "./middlewares/auth.js";
-import cartRouter from "./routes/cartRouter.js";
+import authenticateUser from "./middlewares/auth.middleware.js";
+import cartRouter from "./routes/cart.router.js";
 
 const key = fs.readFileSync('C:\\Users\\rakes\\localhost-key.pem', 'utf8');
 const cert = fs.readFileSync('C:\\Users\\rakes\\localhost.pem', 'utf8');
@@ -59,9 +58,9 @@ app.post("/login", userRouter);
 app.post("/admin/login", adminRouter);
 
 //Categories routes
-app.post("/admin/create-category", createCategoryRouter);
-app.post("/admin/create-subcategory", createCategoryRouter);
-app.get("/get-subcategories", authenticateUser, createCategoryRouter);
+app.post("/admin/create-category", categoryRouter);
+app.post("/admin/create-subcategory", categoryRouter);
+app.get("/get-subcategories", authenticateUser, categoryRouter);
 
 //Product routes
 app.post("/admin/create-product", authenticateUser, uploader.array('productImg', 8),  productRouter);

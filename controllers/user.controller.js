@@ -1,7 +1,7 @@
 const secretKey = process.env.SECRET_KEY;
 const saltRounds = process.env.SALT_ROUNDS;
 
-import userModel from "../models/userModel.js";
+import userModel from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {hash} from "bcrypt";

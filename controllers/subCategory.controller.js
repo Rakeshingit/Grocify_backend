@@ -1,4 +1,4 @@
-import subcategoriesModel from "../models/subcategoriesModel.js";
+import subcategoriesModel from "../models/subcategories.model.js";
 
 async function handleCreateSubcategories(req, res){
     const { name, categoryId, description } = req.body;

@@ -1,5 +1,5 @@
-import categoryModel from "../models/categoriesModel.js";
-import subcategoryModel from "../models/subcategoriesModel.js";
+import categoryModel from "../models/categories.model.js";
+import subcategoryModel from "../models/subcategories.model.js";
 
 
 

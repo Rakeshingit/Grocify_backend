@@ -1,7 +1,7 @@
-import productModel from "../models/productModel.js";
-import subcategoriesModel from "../models/subcategoriesModel.js";
+import productModel from "../models/product.model.js";
+import subcategoriesModel from "../models/subcategories.model.js";
 
-const handleCreateProduct = async (req, res) => {
+const productController = async (req, res) => {
     if(!req.files){
         return res.status(400).send({message:"No file uploaded"});
     }
@@ -33,4 +33,4 @@ const handleGetProducts = async (req, res) => {
     return res.status(200).json(allProducts);
 }
 
-export { handleCreateProduct, handleGetProducts };
+export { productController, handleGetProducts };

@@ -2,7 +2,7 @@
 const secretKey = process.env.SECRET_KEY;
 
 // const mongoose = require("mongoose");
-import userModel from "../models/userModel.js";
+import userModel from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
