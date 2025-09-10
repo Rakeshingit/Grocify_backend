@@ -6,6 +6,15 @@ import cors from "cors";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { globalErrorHandler } from "./utils/errorHandler.js";
+import cartRouter from "./routes/cart.router.js";
+import authRouter from "./routes/auth.router.js";
+import categoryRouter from "./routes/category.router.js";
+import authenticateUser from "./middlewares/authenticate.middleware.js";
+import uploader from "./middlewares/imageUploader.middleware.js";
+import productRouter from "./routes/product.router.js";
+import authorize from "./middlewares/authorize.middleware.js";
+import { handleAdminGetUsers } from "./controllers/admin.controller.js";
+import { ROLES } from "./constants.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,9 +27,6 @@ app.use(cookie_parser());
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, "views")));
 
-//For handling global errors
-app.use(globalErrorHandler);
-
 //CORS Configuration
 app.use(
   cors({
@@ -28,5 +34,45 @@ app.use(
     credentials: true, // Allow credentials (cookies) to be sent
   })
 );
+
+app.get("/", (req, res) => {
+  res.json({ message: "HI from backend" }).status(200);
+});
+
+//Routes
+app.get("/carts", cartRouter);
+app.post("/carts", cartRouter);
+app.delete("/delete-cart-item/:id", cartRouter);
+app.post("/user-registration", authRouter);
+
+//Auth routes
+app.use("/api/v1/auth", authRouter);
+// app.post("/login", authRouter);
+// app.post("/admin/login", adminRouter);
+
+//Categories routes
+app.post("/admin/create-category", categoryRouter);
+app.post("/admin/create-subcategory", categoryRouter);
+app.get("/get-subcategories", authenticateUser, categoryRouter);
+
+//Product routes
+app.post(
+  "/admin/create-product",
+  authenticateUser,
+  uploader.array("productImg", 8),
+  productRouter
+);
+app.get("/get-products", authenticateUser, productRouter);
+
+//User Routes
+app.get(
+  "/admin/get-users",
+  authenticateUser,
+  authorize([ROLES.ADMIN]),
+  handleAdminGetUsers
+);
+
+//For handling global errors
+app.use(globalErrorHandler);
 
 export { app };
