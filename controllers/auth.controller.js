@@ -94,4 +94,17 @@ const handleAccessTokenReissue = async (req, res) => {
     successResponse(res, { accessToken, message: "New access token generated successfully" }, 200);
   });
 };
-export { handleUserRegistration, handleUserLogIn, handleAccessTokenReissue };
+
+function handleLogout(req, res) {
+  res
+    .clearCookie("token", {
+      path: "/",
+      sameSite: "Strict",
+      httpOnly: true,
+      secure: true,
+    })
+    .status(200)
+    .json({ message: "User logged out successfully" });
+  console.log("User logged out successfully");
+}
+export { handleUserRegistration, handleUserLogIn, handleAccessTokenReissue, handleLogout };

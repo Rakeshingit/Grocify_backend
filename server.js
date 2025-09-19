@@ -8,8 +8,8 @@ import productRouter from "./routes/product.router.js";
 
 // import cartRouter from "./routes/cart.router.js";
 import authRouter from "./routes/auth.router.js";
-import adminRouter from "./routes/admin.router.js";
-import categoryRouter from "./routes/category.router.js";
+// import adminRouter from "./routes/admin.router.js";
+// import categoryRouter from "./routes/category.router.js";
 import connectDB from "./db/index.js";
 import { app } from "./app.js";
 import authenticateUser from "./middlewares/authenticate.middleware.js";
