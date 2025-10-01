@@ -6,7 +6,7 @@ import { catchAsync } from "../utils/catchAsync.js";
 const authRouter = express.Router();
 
 // User Routes
-authRouter.post("/registration", catchAsync(handleUserRegistration));
+authRouter.post("/register", catchAsync(handleUserRegistration));
 authRouter.post("/login", catchAsync(handleUserLogIn));
 authRouter.post("/refresh", catchAsync(handleAccessTokenReissue));
 authRouter.post("/logout", handleLogout);
