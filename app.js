@@ -13,6 +13,7 @@ import authenticateUser from "./middlewares/authenticate.middleware.js";
 import productRouter from "./routes/product.router.js";
 import userRouter from "./routes/user.router.js";
 import { subcategoryRouter } from "./routes/subcategory.router.js";
+import { orderRouter } from "./routes/order.router.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,6 +61,8 @@ app.use("/api/v1/products", productRouter);
 //User Routes
 app.use("/api/v1/user", userRouter);
 // app.get("/admin/get-users", authenticateUser, authorize([ROLES.ADMIN]), handleAdminGetUsers);
+
+app.use("/api/v1/orders", orderRouter);
 
 //For handling global errors
 app.use(globalErrorHandler);
