@@ -1,36 +1,30 @@
 import productModel from "../models/product.model.js";
 import subcategoriesModel from "../models/subcategories.model.js";
-import { errorResponse } from "../utils/response.js";
+import { errorResponse, successResponse } from "../utils/response.js";
 
-const productController = async (req, res) => {
-  if (!req.files) {
-    return res.status(400).send({ message: "No file uploaded" });
-  }
+const handleCreateProduct = async (req, res) => {
+  if (!req.files) errorResponse(res, "No images uploaded.", 400);
 
   const imageUrls = [];
 
   req.files.map((file) => {
-    let fullUrl = `https://localhost:8901/uploads/${file.filename}`;
+    let fullUrl = `${process.env.IMAGE_URL_PREFIX}${file.filename}`;
     imageUrls.push(fullUrl);
   });
+
   const productData = req.body;
-  productData.imageUrl = imageUrls;
-  try {
-    const getCategoryId = await subcategoriesModel.findOne({ name: productData.category });
-    productData.categoryId = getCategoryId.id;
-    const addingProduct = new productModel(productData);
-    let isSaved = await addingProduct.save();
-    if (isSaved) {
-      return res.status(200).send({ message: "Product added" });
-    }
-  } catch (err) {
-    console.log(err);
-  }
+  productData.images = imageUrls;
+
+  const getCategoryId = await subcategoriesModel.findOne({ name: productData.category });
+  productData.category = getCategoryId.id;
+  const addingProduct = new productModel(productData);
+  let isSaved = await addingProduct.save();
+  if (isSaved) successResponse(res, null, "Product Created ✅", 200);
 };
 
 const handleGetProducts = async (req, res) => {
-  const allProducts = await productModel.find().populate("categoryId", "name").exec();
-  return res.status(200).json(allProducts);
+  const allProducts = await productModel.find().populate("category", "name").exec();
+  successResponse(res, allProducts, "All products fetched successfully.", 200);
 };
 
 const handlePatchProduct = async (req, res) => {
@@ -41,4 +35,4 @@ const handleDeleteProduct = async (req, res) => {
   errorResponse(res, "Coming soon.", 500, null);
 };
 
-export { productController, handleGetProducts, handlePatchProduct, handleDeleteProduct };
+export { handleCreateProduct, handleGetProducts, handlePatchProduct, handleDeleteProduct };

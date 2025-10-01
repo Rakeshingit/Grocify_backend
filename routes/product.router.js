@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  productController,
+  handleCreateProduct,
   handleGetProducts,
   handlePatchProduct,
   handleDeleteProduct,
@@ -15,9 +15,21 @@ const productRouter = express.Router();
 
 productRouter.use(authenticateUser);
 
-productRouter.get("/", authorize([ROLES.ADMIN, ROLES.CUSTOMER]), catchAsync(handleGetProducts));
-productRouter.post("/", authorize([ROLES.ADMIN]), uploader.array("productImg", 8), catchAsync(productController));
-productRouter.patch("/:id", authorize([ROLES.ADMIN]), uploader.array("productImg", 8), catchAsync(handlePatchProduct));
-productRouter.delete("/:id", authorize([ROLES.ADMIN]), catchAsync(handleDeleteProduct));
+productRouter.get("/", authenticateUser, authorize([ROLES.ADMIN, ROLES.CUSTOMER]), catchAsync(handleGetProducts));
+productRouter.post(
+  "/",
+  authenticateUser,
+  authorize([ROLES.ADMIN]),
+  uploader.array("productImg", 8),
+  catchAsync(handleCreateProduct)
+);
+productRouter.patch(
+  "/:id",
+  authenticateUser,
+  authorize([ROLES.ADMIN]),
+  uploader.array("productImg", 8),
+  catchAsync(handlePatchProduct)
+);
+productRouter.delete("/:id", authenticateUser, authorize([ROLES.ADMIN]), catchAsync(handleDeleteProduct));
 
 export default productRouter;
