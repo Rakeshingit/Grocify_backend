@@ -1,34 +1,21 @@
-import categoryModel from "../models/categories.model.js";
+import categoryModel from "../models/category.model.js";
 import subcategoryModel from "../models/subcategories.model.js";
 import { errorResponse, successResponse } from "../utils/response.js";
 
 async function handleCreateCategory(req, res) {
-  const { name, subCategories, description } = req.body;
-  try {
-    const isDuplicate = await categoryModel.findOne({ name: name });
-    if (isDuplicate) {
-      return res.status(400).json({
-        success: false,
-        message: "Category already exists",
-      });
-    }
-
-    const creatingCategory = new categoryModel({
-      name,
-      subCategories,
-      description,
-    });
-
-    const isSaved = await creatingCategory.save();
-    if (isSaved) {
-      return res.status(200).json({
-        message: "Category added to cart",
-        success: true,
-      });
-    }
-  } catch (e) {
-    console.log(e);
+  const { name, description } = req.body;
+  const isDuplicate = await categoryModel.findOne({ name: name });
+  if (isDuplicate) {
+    errorResponse(res, "Category already exists", 400, isDuplicate);
   }
+
+  const creatingCategory = new categoryModel({
+    name,
+    description,
+  });
+
+  const isSaved = await creatingCategory.save();
+  if (isSaved) successResponse(res, null, "Category created.", 200);
 }
 
 async function handleGetCategories(req, res) {
