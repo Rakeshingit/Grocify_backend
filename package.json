@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
+    "test": "--experimental-vm-modules jest --runInBand",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "dev": "nodemon -r dotenv/config --experimental-json-modules server.js"
