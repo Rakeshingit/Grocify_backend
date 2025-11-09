@@ -34,7 +34,6 @@ const handleUserLogIn = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) return errorResponse(res, "No Email or password provided!!", 400);
 
-  console.log("control here");
   const user = await userModel.findOne({ email: email });
   if (!user) return errorResponse(res, "Invalid email or password", 400);
 
