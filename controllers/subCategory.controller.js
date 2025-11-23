@@ -1,5 +1,6 @@
 import subcategoriesModel from "../models/subcategories.model.js";
 import { errorResponse, successResponse } from "../utils/response.js";
+import categoryModel from "../models/category.model.js";
 
 async function handleCreateSubcategory(req, res) {
   if (!req.files) errorResponse(res, "No images uploaded.", 400);
@@ -11,9 +12,12 @@ async function handleCreateSubcategory(req, res) {
     imageUrls.push(fullUrl);
   });
 
-  // const { name, categoryId, description } = req.body;
   const subcategory = req.body;
   subcategory.image = imageUrls[0];
+
+  //Category id resolution
+  const category = await categoryModel.findOne({ name: subcategory.categoryId });
+  subcategory.categoryId = category.id;
 
   const isDuplicate = await subcategoriesModel.findOne({ name: subcategory.name });
   if (isDuplicate) errorResponse(res, "Subcategory already exists", 400, isDuplicate);
@@ -25,7 +29,7 @@ async function handleCreateSubcategory(req, res) {
 }
 
 const handleGetSubcategory = async (req, res) => {
-  const subcategories = subcategoriesModel.find({});
+  const subcategories = await subcategoriesModel.find({});
   successResponse(res, subcategories, "Success", 200);
 };
 

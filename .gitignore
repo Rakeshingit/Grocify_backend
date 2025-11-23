@@ -24,3 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /db/temp.script.js
+
+uploads

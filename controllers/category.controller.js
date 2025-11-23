@@ -3,16 +3,14 @@ import subcategoryModel from "../models/subcategories.model.js";
 import { errorResponse, successResponse } from "../utils/response.js";
 
 async function handleCreateCategory(req, res) {
-  const { name, description } = req.body;
-  const isDuplicate = await categoryModel.findOne({ name: name });
+  const category = req.body;
+  console.log(req.body);
+  const isDuplicate = await categoryModel.findOne({ name: category.name });
   if (isDuplicate) {
     errorResponse(res, "Category already exists", 400, isDuplicate);
   }
 
-  const creatingCategory = new categoryModel({
-    name,
-    description,
-  });
+  const creatingCategory = new categoryModel(category);
 
   const isSaved = await creatingCategory.save();
   if (isSaved) successResponse(res, null, "Category created.", 200);

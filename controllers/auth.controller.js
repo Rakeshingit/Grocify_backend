@@ -9,7 +9,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const handleUserRegistration = async (req, res) => {
-  const { name, email, phoneNumber, password } = req.body;
+  const { name, email, phoneNo, password } = req.body;
   const isExistingUser = await userModel.findOne({ email: email });
   if (isExistingUser) {
     return errorResponse(res, "User already exists", 409);
@@ -20,7 +20,7 @@ const handleUserRegistration = async (req, res) => {
   const insertUser = new userModel({
     name: name,
     email: email,
-    phoneNo: phoneNumber,
+    phoneNo: phoneNo,
     password: hashed,
   });
   const isSaved = await insertUser.save();

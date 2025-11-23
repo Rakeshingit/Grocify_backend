@@ -28,11 +28,18 @@ const handleGetProducts = async (req, res) => {
 };
 
 const handlePatchProduct = async (req, res) => {
-  errorResponse(res, "Coming soon.", 500, null);
+  const Pid = req.params.id;
+  const update = req.body;
+  const filter = { _id: Pid };
+  const updated = await productModel.findOneAndUpdate(filter, update, { new: true });
+  successResponse(res, updated, "Product details updated successfully.", 200);
 };
 
 const handleDeleteProduct = async (req, res) => {
-  errorResponse(res, "Coming soon.", 500, null);
+  const Pid = req.params.id;
+  const filter = { _id: Pid };
+  const deleted = await productModel.deleteOne(filter);
+  successResponse(res, deleted, "Product deleted successfully.", 200);
 };
 
 export { handleCreateProduct, handleGetProducts, handlePatchProduct, handleDeleteProduct };
