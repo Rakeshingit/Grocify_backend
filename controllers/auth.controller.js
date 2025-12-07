@@ -42,6 +42,7 @@ const handleUserLogIn = async (req, res, next) => {
 
   //Payloads
   const accessTokenPayload = {
+    userId: user._id,
     userEmail: user.email,
     role: user.role,
   };

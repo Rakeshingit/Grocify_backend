@@ -3,13 +3,33 @@ import mongoose from "mongoose";
 const orderSchema = new mongoose.Schema(
   {
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: "usermodels", required: true },
-    orderItems: [
+    orderItemsDetails: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "orderItemDetailsModels",
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "products",
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          default: 1,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        totalAmount: {
+          type: Number,
+          required: true,
+        },
       },
     ],
-    totalAmount: {
+    finalAmount: {
       type: Number,
       required: true,
     },
@@ -17,6 +37,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
       required: true,
+      default: "pending",
     },
     expectedDeliveryDate: {
       type: Date,
@@ -29,11 +50,12 @@ const orderSchema = new mongoose.Schema(
     },
     actualDeliveryDate: {
       type: Date,
-      required: true,
+      default: null,
     },
     paymentStatus: {
       type: String,
       enum: ["paid", "unpaid", "failed", "refunded"],
+      default: "unpaid",
     },
   },
 
